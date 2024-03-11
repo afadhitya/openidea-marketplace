@@ -7,8 +7,13 @@ import (
 	"github.com/widcha/openidea-marketplace/configs"
 	"github.com/widcha/openidea-marketplace/internal/app"
 	"github.com/widcha/openidea-marketplace/internal/app/router"
+	"github.com/widcha/openidea-marketplace/internal/middleware"
 	"github.com/widcha/openidea-marketplace/internal/pkg"
 )
+
+func init() {
+	middleware.PrometheusRegisterInit()
+}
 
 func main() {
 	configs.Load()
