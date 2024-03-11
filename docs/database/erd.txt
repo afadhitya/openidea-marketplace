@@ -1,0 +1,46 @@
+Table users {
+  id uuid [primary key]
+  username varchar(255) [not null]
+  password varchar(255) [not null]
+  name varchar(255) [not null]
+  product_total integer
+  purchase_total integer
+}
+
+Table products {
+  id uuid [primary key]
+  name varchar(60) [not null]
+  price decimal(13,2) [not null]
+  image_url varchar(255) [not null]
+  stock integer [not null]
+  condition enum [not null]
+  tags text [not null]
+  is_purchaseable boolean [not null]
+  purchase_count integer [not null]
+  seller_id uuid [not null]
+}
+
+Table bank_accounts {
+  id uuid [primary key]
+  bank_name varchar(255) [not null]
+  bank_account_name varchar(255) [not null]
+  bank_account_number varchar(255) [not null]
+  user_id uuid [not null]
+}
+
+Table transactions {
+  id uuid [primary key]
+  product_id uuid [not null]
+  quantity integer [not null]
+  payment_proof_image_url varchar [not null]
+  buyer_id uuid [not null]
+}
+
+
+Ref: "users"."id" < "bank_accounts"."user_id"
+
+Ref: "users"."id" < "products"."seller_id"
+
+Ref: "users"."id" < "transactions"."buyer_id"
+
+Ref: "transactions"."product_id" > "products"."id"
