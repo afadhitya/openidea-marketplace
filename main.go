@@ -19,6 +19,7 @@ func main() {
 	configs.Load()
 	ginRouter := gin.Default()
 	datasource := pkg.NewDataSource()
+	_ = pkg.NewStorage() // todo change to variable
 	container := app.NewContainer(datasource)
 	router := router.NewRouter(ginRouter, datasource, container)
 	router.RegisterRouter()
