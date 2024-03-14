@@ -1,12 +1,13 @@
 package pkg
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 )
 
 type S3Config struct {
@@ -20,14 +21,28 @@ func NewS3Client(config S3Config) *s3.S3 {
 	sess, err := getNewSession(config)
 
 	if err != nil {
-		fmt.Println("Failed to create AWS session:", err)
+		log.Println("Failed to create AWS session:", err)
 		return nil
 	}
 
 	s3Client := s3.New(sess)
-	fmt.Println("S3 session & client initialized")
+	log.Println("S3 session & client initialized")
 
 	return s3Client
+}
+
+func NewS3Uploader(config S3Config) *s3manager.Uploader {
+	sess, err := getNewSession(config)
+
+	if err != nil {
+		log.Println("Failed to create AWS session:", err)
+		return nil
+	}
+
+	s3Uploader := s3manager.NewUploader(sess)
+	log.Println("S3 session & s3Uploader initialized")
+
+	return s3Uploader
 }
 
 func getNewSession(config S3Config) (*session.Session, error) {
