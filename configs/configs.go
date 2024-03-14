@@ -8,15 +8,17 @@ import (
 )
 
 type Config struct {
-	AppName    string `mapstructure:"app_name"`
-	AppVersion string `mapstructure:"app_version"`
-	DBHost     string `mapstructure:"db_host"`
-	DBName     string `mapstructure:"db_name"`
-	DBPassword string `mapstructure:"db_password"`
-	DBPort     string `mapstructure:"db_port"`
-	DBUsername string `mapstructure:"db_username"`
-	ENV        string `mapstructure:"env"`
-	Port       string `mapstructure:"port"`
+	AppName     string `mapstructure:"app_name"`
+	AppVersion  string `mapstructure:"app_version"`
+	DBHost      string `mapstructure:"db_host"`
+	DBName      string `mapstructure:"db_name"`
+	DBPassword  string `mapstructure:"db_password"`
+	DBPort      string `mapstructure:"db_port"`
+	DBUsername  string `mapstructure:"db_username"`
+	ENV         string `mapstructure:"env"`
+	Port        string `mapstructure:"port"`
+	MaxAgeToken int    `mapstructure:"max_age_token"`
+	JwtSecret   string `mapstructure:"jwt_secret"`
 }
 
 var (

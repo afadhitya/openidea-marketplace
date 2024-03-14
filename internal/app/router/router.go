@@ -5,6 +5,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/widcha/openidea-marketplace/internal/app"
 	"github.com/widcha/openidea-marketplace/internal/app/modules/health"
+	userhandler "github.com/widcha/openidea-marketplace/internal/app/modules/user/handler"
 	"github.com/widcha/openidea-marketplace/internal/middleware"
 	"github.com/widcha/openidea-marketplace/internal/pkg"
 )
@@ -33,4 +34,11 @@ func (h *Router) RegisterRouter() {
 	})
 	h.router.GET("/health", health.GetHealthCheckHandler(h.container.HealthCheckUsecase))
 	h.router.GET("/prometheus", gin.WrapH(promhttp.Handler()))
+
+	v1 := h.router.Group("/v1")
+
+	// User
+	user := v1.Group("/user")
+	user.POST("/register", userhandler.SignupHandler(h.container.UserSignupUsecase))
+
 }
