@@ -8,19 +8,21 @@ import (
 )
 
 type Config struct {
-	AppName        string `mapstructure:"app_name"`
-	AppVersion     string `mapstructure:"app_version"`
-	DBHost         string `mapstructure:"db_host"`
-	DBName         string `mapstructure:"db_name"`
-	DBPassword     string `mapstructure:"db_password"`
-	DBPort         string `mapstructure:"db_port"`
-	DBUsername     string `mapstructure:"db_username"`
-	ENV            string `mapstructure:"env"`
-	Port           string `mapstructure:"port"`
-	AwsAccessKeyId string `mapstructure:"aws_access_key_id`
-	AwsSecretKey   string `mapstructure:"aws_secret_key`
-	AwsRegion      string `mapstructure:"aws_region`
-	S3BucketName   string `mapstructure:"s3_bucket_name`
+	AppName     	string `mapstructure:"app_name"`
+	AppVersion  	string `mapstructure:"app_version"`
+	DBHost      	string `mapstructure:"db_host"`
+	DBName     	string `mapstructure:"db_name"`
+	DBPassword  	string `mapstructure:"db_password"`
+	DBPort     	string `mapstructure:"db_port"`
+	DBUsername  	string `mapstructure:"db_username"`
+	ENV         	string `mapstructure:"env"`
+	Port        	string `mapstructure:"port"`
+	MaxAgeToken 	int    `mapstructure:"max_age_token"`
+	JwtSecret   	string `mapstructure:"jwt_secret"`
+  	AwsAccessKeyId 	string `mapstructure:"aws_access_key_id`
+	AwsSecretKey   	string `mapstructure:"aws_secret_key`
+	AwsRegion      	string `mapstructure:"aws_region`
+	S3BucketName   	string `mapstructure:"s3_bucket_name`
 }
 
 var (
