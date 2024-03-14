@@ -1,6 +1,7 @@
 package s3pkg
 
 import (
+	"log"
 	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -18,13 +19,20 @@ func NewS3Service(storage *pkg.Storage) *S3Service {
 	}
 }
 
-func (s *S3Service) UploadFile(filePath string, fileName string) {
+func (s S3Service) UploadFile(filePath string, fileName string) error {
 	file, err := os.Open(filePath)
 	if err != nil {
+		log.Fatalln(err)
 		return err
 	}
 
 	defer file.Close()
 
-	err, _ := storage.S3Uploader.Upload(&s3manager.UploadInput{Bucket: aws.String(storage.S3Config.)})
+	_, err = s.storage.S3Uploader.Upload(&s3manager.UploadInput{
+		Bucket: aws.String(s.storage.S3Config.BucketName),
+		Key:    aws.String(fileName),
+		Body:   file,
+	})
+
+	return err
 }
