@@ -6,6 +6,7 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/widcha/openidea-marketplace/configs"
 	"github.com/widcha/openidea-marketplace/internal/app"
+	"github.com/widcha/openidea-marketplace/internal/app/modules/s3"
 	"github.com/widcha/openidea-marketplace/internal/app/router"
 	"github.com/widcha/openidea-marketplace/internal/middleware"
 	"github.com/widcha/openidea-marketplace/internal/pkg"
@@ -19,6 +20,8 @@ func main() {
 	configs.Load()
 	ginRouter := gin.Default()
 	datasource := pkg.NewDataSource()
+	storage := pkg.NewStorage()
+	_ = s3.NewS3Service(storage) // todo change to variable
 	container := app.NewContainer(datasource)
 	router := router.NewRouter(ginRouter, datasource, container)
 	router.RegisterRouter()
