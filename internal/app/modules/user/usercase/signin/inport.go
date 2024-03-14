@@ -1,4 +1,4 @@
-package signup
+package signin
 
 import "context"
 
@@ -7,7 +7,6 @@ type Inport interface {
 }
 
 type InportRequest struct {
-	Name     string `json:"name" validate:"required"`
 	Username string `json:"username" validate:"required"`
 	Password string `json:"password" validate:"required"`
 }

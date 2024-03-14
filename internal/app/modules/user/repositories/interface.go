@@ -12,4 +12,5 @@ type IRepo interface {
 
 type IUser interface {
 	Create(context.Context, userentities.User) error
+	GetbyUsername(ctx context.Context, username string) (userentities.User, error)
 }
