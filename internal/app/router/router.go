@@ -40,5 +40,6 @@ func (h *Router) RegisterRouter() {
 	// User
 	user := v1.Group("/user")
 	user.POST("/register", userhandler.SignupHandler(h.container.UserSignupUsecase))
+	user.POST("/login", userhandler.SigninHandler(h.container.UserSigninUsecase))
 
 }

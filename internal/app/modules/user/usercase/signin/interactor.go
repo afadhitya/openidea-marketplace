@@ -1,11 +1,10 @@
-package signup
+package signin
 
 import (
 	"context"
+	"errors"
 	"log"
 
-	"github.com/google/uuid"
-	userentities "github.com/widcha/openidea-marketplace/internal/app/modules/user"
 	userrepositories "github.com/widcha/openidea-marketplace/internal/app/modules/user/repositories"
 	"github.com/widcha/openidea-marketplace/internal/pkg/pwd"
 	"github.com/widcha/openidea-marketplace/internal/pkg/token"
@@ -24,24 +23,21 @@ func NewUsecase(userRepo userrepositories.IRepo, jwtToken token.JwtCreateToken) 
 }
 
 func (i interactor) Execute(ctx context.Context, req InportRequest) (InportResponse, error) {
-	hashPass := pwd.HashAndSalt([]byte(req.Password))
-
-	user := userentities.User{
-		Id:       uuid.NewString(),
-		Name:     req.Name,
-		Username: req.Username,
-		Password: hashPass,
-	}
-
-	err := i.userRepo.User().Create(ctx, user)
+	user, err := i.userRepo.User().GetbyUsername(ctx, req.Username)
 	if err != nil {
 		log.Println(err)
 		return InportResponse{}, err
 	}
 
+	passTrue := pwd.ComparePasswords(user.Password, []byte(req.Password))
+	if !passTrue {
+		log.Println(err)
+		return InportResponse{}, errors.New("password incorrect")
+	}
+
 	userToken, _, err := i.jwtToken.CreateTokenUser(ctx, user)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 		return InportResponse{}, err
 	}
 
