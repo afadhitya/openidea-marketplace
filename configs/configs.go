@@ -19,6 +19,10 @@ type Config struct {
 	Port        string `mapstructure:"port"`
 	MaxAgeToken int    `mapstructure:"max_age_token"`
 	JwtSecret   string `mapstructure:"jwt_secret"`
+  AwsAccessKeyId string `mapstructure:"aws_access_key_id`
+	AwsSecretKey   string `mapstructure:"aws_secret_key`
+	AwsRegion      string `mapstructure:"aws_region`
+	S3BucketName   string `mapstructure:"s3_bucket_name`
 }
 
 var (
