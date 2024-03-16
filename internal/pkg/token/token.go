@@ -12,7 +12,14 @@ import (
 )
 
 type JwtCreateToken interface {
-	CreateTokenUser(ctx context.Context, user userentities.User) (string, int64, error)
+	CreateTokenUser(ctx context.Context, user userentities.User) (string, time.Time, error)
+}
+
+type UserClaims struct {
+	UserID   string `json:"user_id"`
+	Name     string `json:"name"`
+	Username string `json:"username"`
+	jwt.RegisteredClaims
 }
 
 type JWTToken struct {
@@ -29,17 +36,21 @@ func NewJWTToken(secretKey string) *JWTToken {
 	}
 }
 
-func (g *JWTToken) CreateTokenUser(ctx context.Context, user userentities.User) (string, int64, error) {
-	expiredTime := time.Now().Add(time.Second * time.Duration(configs.Get().MaxAgeToken)).Unix()
+func (g *JWTToken) CreateTokenUser(ctx context.Context, user userentities.User) (string, time.Time, error) {
+	issuedAt := time.Now()
+	expiredTime := issuedAt.Add(time.Second * time.Duration(configs.Get().MaxAgeToken))
 
-	claims := jwt.MapClaims{
-		"userid":   user.Id,
-		"name":     user.Name,
-		"username": user.Username,
-		"exp":      expiredTime,
+	userClaims := UserClaims{
+		UserID:   user.Id,
+		Name:     user.Name,
+		Username: user.Username,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(expiredTime),
+			IssuedAt:  jwt.NewNumericDate(issuedAt),
+		},
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, userClaims)
 
 	tokenString, err := token.SignedString([]byte(configs.Get().JwtSecret))
 	if err != nil {
