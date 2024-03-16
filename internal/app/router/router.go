@@ -6,6 +6,7 @@ import (
 	"github.com/widcha/openidea-marketplace/internal/app"
 	bankaccounthandler "github.com/widcha/openidea-marketplace/internal/app/modules/bankaccount/handler"
 	"github.com/widcha/openidea-marketplace/internal/app/modules/health"
+	producthandler "github.com/widcha/openidea-marketplace/internal/app/modules/product/handler"
 	userhandler "github.com/widcha/openidea-marketplace/internal/app/modules/user/handler"
 	"github.com/widcha/openidea-marketplace/internal/middleware"
 	"github.com/widcha/openidea-marketplace/internal/pkg"
@@ -46,4 +47,8 @@ func (h *Router) RegisterRouter() {
 	// Bank Account
 	bankAccount := v1.Group("/bank-account")
 	bankAccount.POST("/save", bankaccounthandler.SaveBankAccountHandler(h.container.BankAccountSaveUsecase))
+
+	// Product
+	product := v1.Group("/product")
+	product.POST("", producthandler.SaveProductHandler(h.container.ProductSaveUsecase))
 }
