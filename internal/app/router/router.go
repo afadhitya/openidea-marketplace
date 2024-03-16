@@ -44,6 +44,7 @@ func (h *Router) RegisterRouter() {
 	user.POST("/login", userhandler.SigninHandler(h.container.UserSigninUsecase))
 
 	// Bank Account
-	bankAccount := v1.Group("/bank-account")
-	bankAccount.POST("/save", bankaccounthandler.SaveBankAccountHandler(h.container.BankAccountSaveUsecase))
+	bankAccount := v1.Group("/bank/account")
+	bankAccount.Use(middleware.AuthMiddleware())
+	bankAccount.POST("", bankaccounthandler.SaveBankAccountHandler(h.container.BankAccountSaveUsecase))
 }
