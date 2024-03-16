@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/widcha/openidea-marketplace/internal/app"
+	bankaccounthandler "github.com/widcha/openidea-marketplace/internal/app/modules/bankaccount/handler"
 	"github.com/widcha/openidea-marketplace/internal/app/modules/health"
 	userhandler "github.com/widcha/openidea-marketplace/internal/app/modules/user/handler"
 	"github.com/widcha/openidea-marketplace/internal/middleware"
@@ -42,4 +43,7 @@ func (h *Router) RegisterRouter() {
 	user.POST("/register", userhandler.SignupHandler(h.container.UserSignupUsecase))
 	user.POST("/login", userhandler.SigninHandler(h.container.UserSigninUsecase))
 
+	// Bank Account
+	bankAccount := v1.Group("/bank-account")
+	bankAccount.POST("/save", bankaccounthandler.SaveBankAccountHandler(h.container.BankAccountSaveUsecase))
 }
