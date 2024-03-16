@@ -19,24 +19,20 @@ func NewUsecase(bankAccountRepo bankaccountrepositories.IRepo) Inport {
 	}
 }
 
-func (i interactor) Execute(ctx context.Context, req InportRequest) (InportResponse, error) {
+func (i interactor) Execute(ctx context.Context, req InportRequest) error {
 	bankAccount := bankaccountentities.BankAccount{
 		Id:                uuid.NewString(),
 		BankName:          req.BankName,
 		BankAccountName:   req.BankAccountName,
 		BankAccountNumber: req.BankAccountNumber,
+		UserId:            req.UserID,
 	}
 
 	err := i.bankAccountRepo.BankAccount().Create(ctx, bankAccount)
 	if err != nil {
 		log.Println(err)
-		return InportResponse{}, err
+		return err
 	}
 
-	return InportResponse{
-		BankAccountId:     bankAccount.Id,
-		BankName:          bankAccount.BankName,
-		BankAccountName:   bankAccount.BankAccountName,
-		BankAccountNumber: bankAccount.BankAccountNumber,
-	}, nil
+	return nil
 }
